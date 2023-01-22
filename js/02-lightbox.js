@@ -9,26 +9,31 @@ const onImgClick = (event) => {
         return;
     };
 
-    const simpleLightbox = new SimpleLightbox('.gallery a', {
-        captionDelay: 250,
-        captionsData: 'alt',
-    })
-
     function closeModal(event) {
         if (event.code === 'Escape') {
             lightbox.close();
         };
     };
-
 }; 
 galleryEl.addEventListener('click', onImgClick);
 
-const createGalletyElements = items => {
-    return items.map(item => {
-        galleryEl.insertAdjacentHTML(`beforeend`, `
-        <a class="gallery__item" href="${item.original}">
-        <img class="gallery__image" src="${item.preview}" alt="${item.description}">
-        </a>`);
-    });
-};
-createGalletyElements(galleryItems);
+const createGalletyElements = galleryItems.map(element => {
+    const link = document.createElement('a');
+    link.classList.add('gallery__item');
+    link.href = `${element.original}`;
+    
+    const image = document.createElement('img');
+    image.classList.add('gallery__image');
+    image.src = `${element.preview}`;
+    image.alt = `${element.description}`;
+
+    link.appendChild(image);
+    return link;
+});
+
+galleryEl.append(...createGalletyElements);
+
+const simpleLightbox = new SimpleLightbox('.gallery a', {
+    captionDelay: 250,
+    captionsData: 'alt',
+});

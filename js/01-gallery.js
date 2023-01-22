@@ -27,12 +27,23 @@ const onImgClick = (event) => {
 }; 
 galleryEl.addEventListener('click', onImgClick);
 
-const createGalletyElements = items => {
-    return items.map(item => {
-        galleryEl.insertAdjacentHTML(`beforeend`, `<div class = 'gallery__item'>
-        <a class="gallery__link" href="${item.original}">
-        <img class="gallery__image" src="${item.preview}" data-source="${item.original}" alt="${item.description}">
-        </a></div>`);
-    });
-};
-createGalletyElements(galleryItems);
+const createGalletyElements = galleryItems.map(element => {
+    const container = document.createElement('div');
+    container.classList.add('gallery__item');
+
+    const link = document.createElement('a');
+    link.classList.add('gallery__link');
+    link.href = `${element.original}`;
+    
+    const image = document.createElement('img');
+    image.classList.add('gallery__image');
+    image.src = `${element.preview}`;
+    image.setAttribute('data-source', `${element.original}`);
+    image.alt = `${element.description}`;
+
+    link.appendChild(image);
+    container.appendChild(link);
+    return container;
+});
+
+galleryEl.append(...createGalletyElements);
